@@ -1,6 +1,6 @@
-CC      = gcc
-LD      = gcc
-SIZE    = size
+CC      = arm-none-eabi-gcc
+LD      = arm-none-eabi-gcc
+SIZE    = arm-none-eabi-size
 
 TARGET = luaproj
 BINDIR = bin
@@ -50,22 +50,22 @@ OBJECTS += lua/lzio.o
 
 INCLUDES = lua
 
-COMMON = -Os
+COMMON = -Os -g
 COMMON += -Wall
 COMMON += -Wextra
 COMMON += -flto
 COMMON += -ffunction-sections
 COMMON += -fdata-sections
+COMMON += -mcpu=cortex-m4
+COMMON += -mfloat-abi=hard
+COMMON += --specs=rdimon.specs
+COMMON += -mfpu=fpv4-sp-d16
+COMMON += -mthumb
 
 CFLAGS = $(COMMON)
 CFLAGS += $(addprefix -I, $(INCLUDES))
 CFLAGS += -std=c99
 
 LDFLAGS = $(COMMON)
-LDFLAGS += -lm
-
-ifeq ($(shell uname -s),Darwin)
-    LDFLAGS += -Wl,-dead_strip
-else
-    LDFLAGS += -Wl,-O1,--gc-sections
-endif
+LDFLAGS += -Wl,-O1,--gc-sections
+LDFLAGS += -Tstm32f429zi.ld

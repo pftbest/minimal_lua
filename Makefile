@@ -11,7 +11,7 @@ clean:
 
 $(BINDIR)/$(TARGET): $(OBJLIST)
 	mkdir -p $(dir $@)
-	$(LD) $(LDFLAGS) -o $@ $^
+	$(LD) $(LDFLAGS) -o $@ $^ -lm
 
 $(OBJDIR)/%.o: %.c $(HEADERS)
 	mkdir -p $(dir $@)
